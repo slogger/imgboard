@@ -1,0 +1,279 @@
+/*::-webkit-scrollbar {
+    display: none;
+}*/
+
+html {
+    font-size: 14px;
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 1rem;
+    margin: 0;
+}
+
+p {
+    font-size: 1rem;
+    margin: 0.3rem 0 0;
+}
+
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2rem;
+    margin: 0;
+    color: white;
+    font-size: 1rem;
+    background: #6C8784;
+}
+
+.nav-bar__label {
+    display: none;
+    padding: 0 0.5rem;
+    line-height: 2rem;
+    cursor: pointer;
+}
+
+.nav-bar__label {
+    display: none;
+    padding: 0 0.5rem;
+    line-height: 2rem;
+    cursor: pointer;
+    height: 2rem;
+}
+
+
+.nav-bar__label-control {
+    position: absolute;
+    top: -999px;
+    display: none;
+}
+
+.nav-bar__menu-list {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    height: 2rem;
+    overflow: hidden;
+}
+
+.nav-bar__menu-item {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-bar__menu-item:hover {
+    background: #111;
+}
+
+.nav-bar__menu-item a {
+    display: block;
+    height: 2rem;
+    padding: 0 0.5rem;
+    color: white;
+    line-height: 2rem;
+    text-decoration: none;
+}
+
+.content {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+.gallery::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.gallery::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #87766C;
+    border: 1px solid #45362E;
+}
+
+.gallery {
+    background: #45362E;
+    height: 100%; /* failback */
+    height: calc(100vh - 4em);
+    width: 160px;
+    max-width: 250px;
+    min-height: 160px;
+    text-align: center;
+    padding: 1em;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    flex-grow: 1;
+    flex-basis: 160px;
+}
+
+.gallery__item {
+    display: inline-block;
+    height: 160px;
+    width: 160px;
+    width: 100%;
+    background-size: cover;
+    margin: 0.5em 0;
+}
+.gallery__item:first-child {
+    margin-top: 0;
+}
+.gallery__item:last-child {
+    margin-bottom: 0;
+}
+.posts {
+    background: #87766C;
+    flex-grow: 1;
+    /*height: 100%;*/
+    overflow-x: hidden;
+    margin-bottom: 2em;
+}
+
+.post {
+    margin: 1em;
+    width: auto;
+}
+
+.post__header {
+    background: #EBBD63;
+    padding: 1em;
+    border-radius: 4px 4px 0 0;
+}
+.post__footer {
+    background: #EBBD63;
+    padding: 1em;
+    border-radius: 0 0 4px 4px;
+    line-height: 2em;
+}
+.post__author,
+.post__date,
+.post__number
+{
+    background: #59A9C2;
+    padding: 0.3em;
+    border-radius: 4px;
+    color: #fff;
+}
+.post__number::before {
+    content: '#';
+}
+.post__body {
+    background: #61381B;
+    padding: 1em;
+    color: #fff
+}
+.post__images {
+    height: 160px;
+    margin-bottom: 1em;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+.post__images::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.post__images::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #87766C;
+    border: 1px solid #61381B;
+}
+.post__images img {
+    height: 100%;
+    margin: 0 4px;
+}
+
+.lightbox {
+    position: absolute;
+    background: rgba(0,0,0,.8);
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    display: flex;
+}
+
+.lightbox__photo-wrap {
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+}
+
+img.lightbox__photo {
+    max-height: 80%;
+    height: 80%;
+    margin: auto;
+}
+
+@media all and (max-width: 660px) {
+    .nav-bar__label-control:checked + .nav-bar__menu-list {
+        display: block;
+        height: 100vh;
+        overflow-y: scroll;
+    }
+    .nav-bar {
+        height: auto;
+    }
+    .nav-bar__label {
+        display: inline-block;
+        height: 50px;
+        width: 100%;
+        border-bottom: 1px solid black;
+        text-align: center;
+    }
+    .nav-bar__menu-list {
+        display: none;
+    }
+    .nav-bar__menu-item {
+        float: none;
+        border-bottom: 1px solid #333;
+        background: #6C8784;
+    }
+    .nav-bar__menu-item a {
+        height: 3rem;
+        line-height: 3rem;
+    }
+    .content {
+        flex-direction: column;
+        overflow-y: scroll;
+        margin-top: 50px;
+    }
+    .gallery {
+        height: 160px;
+        width: auto;
+        vertical-align: middle;
+        line-height: 160px;
+        text-align: left;
+        white-space: nowrap;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        max-width: none;
+    }
+    .gallery__item {
+        margin: 0 0.5em;
+        width: 160px;
+    }
+    .gallery__item:first-child {
+        margin-left: 0;
+    }
+    .gallery__item:last-child {
+        margin-right: 0;
+    }
+    .posts {
+        overflow-x: visible;
+        margin-bottom: 50px;
+    }
+}

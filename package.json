@@ -1,0 +1,24 @@
+{
+  "name": "imgboard",
+  "version": "0.0.1",
+  "description": "Anonymous imageboard for hipsters",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slogger/imgboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slogger/imgboard/issues"
+  },
+  "homepage": "https://github.com/slogger/imgboard#readme",
+  "dependencies": {
+    "koa": "^1.1.2",
+    "koa-cheerio-template": "^1.2.4",
+    "lodash": "^3.10.1"
+  }
+}
