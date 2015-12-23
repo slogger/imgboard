@@ -2,7 +2,9 @@
     <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/evil-icons/1.7.8/evil-icons.min.css">
         <script src="https://cdn.jsdelivr.net/evil-icons/1.7.8/evil-icons.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
         <link rel="stylesheet" href="index.css">
+        <script src="router.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
@@ -205,68 +207,120 @@
                 </div>
             </section>
         </section>
-        <section class="lightbox">
-            <div class="lightbox__photo-wrap"><img src="http://placekitten.com.s3.amazonaws.com/homepage-samples/200/287.jpg" class="lightbox__photo"></div>
-            <div class="lightbox__photo-wrap"><img src="http://placekitten.com.s3.amazonaws.com/homepage-samples/408/287.jpg" class="lightbox__photo"></div>
-            <div class="lightbox__photo-wrap"><img src="http://placekitten.com.s3.amazonaws.com/homepage-samples/200/287.jpg" class="lightbox__photo"></div>
-            <div class="lightbox__photo-wrap"><img src="http://placekitten.com.s3.amazonaws.com/homepage-samples/200/287.jpg" class="lightbox__photo"></div>
-            <div class="lightbox__photo-wrap"><img src="http://placekitten.com.s3.amazonaws.com/homepage-samples/200/287.jpg" class="lightbox__photo"></div>
-            <div class="lightbox__photo-wrap"><img src="http://placekitten.com.s3.amazonaws.com/homepage-samples/200/287.jpg" class="lightbox__photo"></div>
-            <div class="lightbox__photo-wrap"><img src="http://placekitten.com.s3.amazonaws.com/homepage-samples/200/287.jpg" class="lightbox__photo"></div>
-            <div class="lightbox__photo-wrap"><img src="http://placekitten.com.s3.amazonaws.com/homepage-samples/200/287.jpg" class="lightbox__photo"></div>
-            <div class="lightbox__photo-wrap"><img src="http://placekitten.com.s3.amazonaws.com/homepage-samples/200/287.jpg" class="lightbox__photo"></div>
-            <div class="lightbox__photo-wrap"><img src="http://placekitten.com.s3.amazonaws.com/homepage-samples/200/287.jpg" class="lightbox__photo"></div>
+
+        <section class="lightbox__wrap">
+            <button class="lightbox__button--prev"><div data-icon="ei-chevron-left" data-size="s"></button>
+            <div class="scroller">
+                <ul class="items"></ul>
+            </div>
+            <button class="lightbox__button--next"><div data-icon="ei-chevron-right" data-size="s"></button>
+            <span class="lightbox__button--close"><div data-icon="ei-close" data-size="m"></div></span>
         </section>
     </body>
 </html>
 <script>
-    var LightboxController = function () {
-        var self = this;
-        var lightbox = document.querySelector('.lightbox');
-        var currentPhoto = 1;
-        var prevScrollPosition = 0;
-        var delta = Math.max(window.screen.width/4, 0);
 
-        var scrollhandler = function (e) {
-            var isScrollRight;
-            if (prevScrollPosition - lightbox.scrollLeft < 0) {
-                isScrollRight = true
-            } else {
-                isScrollRight = false;
-            }
-            console.log(isScrollRight);
-            prevScrollPosition = lightbox.scrollLeft
-            var nextState;
-            var currentPhoto = Math.ceil(lightbox.scrollLeft/window.screen.width)
-            var currentPhotoEnd = window.screen.width * currentPhoto;
-            var currentPhotoStart = currentPhotoEnd - window.screen.width;
+var Slider = function() {
+    var self = this;
+    var wrap = document.querySelector('.lightbox__wrap');
+    var items = document.querySelector('.items');
+    var itemCount = 0;
+    var scroller = document.querySelector('.scroller');
+    var transform = Modernizr.prefixed('transform');
 
-            if (isScrollRight) {
-                if (lightbox.scrollLeft > currentPhotoStart + delta) {
-                    nextState = 'next'
-                }
-            } else {
-                if (lightbox.scrollLeft < currentPhotoEnd - delta) {
-                    nextState = 'prev'
-                }
-                console.log(lightbox.scrollLeft, currentPhotoStart, currentPhotoEnd, delta);
-            }
+    var prevButton = document.querySelector('.lightbox__button--prev');
+    var nextButton = document.querySelector('.lightbox__button--next');
+    var closeButton = document.querySelector('.lightbox__button--close');
 
-            switch (nextState) {
-                case 'next':
-                    lightbox.scrollLeft = currentPhotoEnd;
-                    break;
-                case 'prev':
-                    lightbox.scrollLeft = currentPhotoStart;
-                    break;
-                default:
-                    lightbox.scrollLeft = currentPhotoEnd;
-
-            }
-
-        }
-
-        lightbox.addEventListener('scroll', scrollhandler)
+    var pos = 0;
+    var setTransform = function () {
+        items.style[transform] = 'translate3d(' + (-pos * items.offsetWidth) + 'px,0,0)';
     }
-    var lightboxController = new LightboxController();
+    this.clean = function () {
+        var _items = items.querySelectorAll('.item');
+        [].forEach.call(_items, function (node) { node.remove() });
+    }
+    this.addPhoto = function (photos) {
+        photos.forEach(function (photoUrl) {
+            var photo = document.createElement('li');
+            photo.classList.add('item');
+            photo.style.backgroundImage = photoUrl;
+            items.appendChild(photo);
+        });
+        itemCount = photos.length;
+    }
+    this.show = function () {
+        wrap.style.display = 'flex';
+    }
+    this.hide = function () {
+        wrap.style.display = 'none';
+    }
+    var checkButton = function () {
+        var prevIsActive;
+        var nextIsActive;
+        if (pos == 0) {
+            prevIsActive = false;
+            nextIsActive = true;
+        } else if (pos == itemCount - 1) {
+            prevIsActive = true;
+            nextIsActive = false;
+        } else if (pos == 0 && pos == itemCount - 1) {
+            prevIsActive = false;
+            nextIsActive = false;
+        } else {
+            prevIsActive = true;
+            nextIsActive = true;
+        }
+        console.log('prev:', prevIsActive);
+        console.log('next:', nextIsActive);
+        if (prevIsActive) {
+            prevButton.removeAttribute('disabled');
+        } else {
+            prevButton.setAttribute('disabled', true);
+        }
+        if (nextIsActive) {
+            nextButton.removeAttribute('disabled');
+        } else {
+            nextButton.setAttribute('disabled', true);
+        }
+    }
+
+    var prev = function () {
+        pos = Math.max(pos - 1, 0);
+        setTransform();
+        checkButton();
+    }
+
+    var next = function () {
+        pos = Math.min(pos + 1, itemCount - 1);
+        setTransform();
+        checkButton();
+    }
+    prevButton.addEventListener('click', prev);
+    nextButton.addEventListener('click', next);
+    closeButton.addEventListener('click', function () {
+        self.hide();
+    })
+    self.next = next;
+    self.prev = prev;
+    window.addEventListener('resize', setTransform);
+}
+var slider = new Slider();
+var imgs = document.querySelectorAll('.post__images img');
+
+[].forEach.call(imgs, function (img) {
+    img.addEventListener('click', function (e) {
+        var imgsFromPostRaw = e.target.parentNode.querySelectorAll('img');
+        var currentImg = 0;
+        var imgsFromPost = [];
+        [].forEach.call(imgsFromPostRaw, function (image, iter) {
+            imgsFromPost.push('url(' + image.src + ')');
+            console.log(iter);
+        })
+        console.log(imgsFromPost);
+        slider.clean();
+        slider.addPhoto(imgsFromPost);
+        slider.show();
+    })
+})
 </script>

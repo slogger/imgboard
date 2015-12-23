@@ -4,7 +4,8 @@
   "description": "Anonymous imageboard for hipsters",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha --harmony --reporter spec --require tests/prepare ./tests/test-*.js"
   },
   "repository": {
     "type": "git",
@@ -17,8 +18,25 @@
   },
   "homepage": "https://github.com/slogger/imgboard#readme",
   "dependencies": {
-    "koa": "^1.1.2",
-    "koa-cheerio-template": "^1.2.4",
-    "lodash": "^3.10.1"
+    "co": "^4.6.0",
+    "debug": "^2.2.0",
+    "koa": "^2.0.0-alpha.3",
+    "koa-bodyparser": "^3.0",
+    "koa-convert": "^1.2.0",
+    "koa-hbs": "^0.7.0",
+    "koa-router": "^7.0.0",
+    "koa-static": "git+https://github.com/hgenru/static.git",
+    "mongoose": "^4.3.3",
+    "require-dir": "^0.3.0",
+    "supertest": "^1.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "chai-things": "^0.2.0",
+    "mocha": "^2.3.4",
+    "mocha-mongoose": "^1.1.1",
+    "mocha-prepare": "0.0.1",
+    "mongodb": "^2.0.52",
+    "supertest-as-promised": "^2.0.2"
   }
 }
